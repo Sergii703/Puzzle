@@ -62,7 +62,7 @@ public class Game extends JFrame{
 
                 if (i == 3 && j == 2){
                     lastButton = new PuzzleButton();
-                    lastButton.setBorder(false);
+                    lastButton.setBorderPainted(false);
                     lastButton.setContentAreaFilled(false);
                     lastButton.setLastButton(true);
                 } else{
