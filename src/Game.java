@@ -2,6 +2,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.CropImageFilter;
+import java.awt.image.FilteredImageSource;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,10 +16,10 @@ public class Game extends JFrame{
     private BufferedImage resized;
     private int width, height;
     private  final int DESIRED_WIDTH = 400;
+    private Image image;
+    private PuzzleButton lastButton;
 
-    public Game(){
-
-    }
+    public Game(){ initUI(); }
 
     public void initUI(){
         solution = new ArrayList<>();
@@ -45,6 +47,28 @@ public class Game extends JFrame{
             resized = resizedImage(source, DESIRED_WIDTH, h, BufferedImage.TYPE_INT_ARGB);
         }catch(IOException ex){
             System.err.println("Maden, maden" + ex);
+        }
+
+        width = resized.getWidth();
+        height = resized.getHeight();
+
+        add(panel, BorderLayout.CENTER);
+
+        for (int i =0; i<4; i++){
+            for (int j = 0; j<3; j++){
+                image = createImage(new FilteredImageSource(resized.getSource(), new CropImageFilter(j*width/3, i*height/4, width/3, height/4)));
+                PuzzleButton button = new PuzzleButton(image);
+                button. putClientProperty("position", new Point(i, j));
+
+                if (i == 3 && j == 2){
+                    lastButton = new PuzzleButton();
+                    lastButton.setBorder(false);
+                    lastButton.setContentAreaFilled(false);
+                    lastButton.setLastButton(true);
+                } else{
+                    buttons.add(button);
+                }
+            }
         }
     }
 
